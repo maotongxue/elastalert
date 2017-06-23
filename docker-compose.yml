@@ -1,0 +1,20 @@
+version: '2'
+services:
+  elastalert:
+    build: 
+            context: ./
+            dockerfile: ./Dockerfile
+    image: poison:elartalert
+    cap_add:
+      - SYS_TIME
+      - SYS_NICE
+    network_mode: "host"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config.yaml:/opt/elastalert/config.yaml
+      - ./rules:/opt/elastalert/rules
+    environment:
+      - ELASTICSEARCH_HOST=10.10.11.193
+      - ELASTICSEARCH_PORT=9200
+    container_name: alert
+    restart: always
